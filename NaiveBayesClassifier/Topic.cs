@@ -1,12 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NaiveBayesClassifier
+﻿namespace NaiveBayesClassifier
 {
-    class Topic
+    public class Topic
     {
+        private readonly object _value;
+
+        public Topic(object value)
+        {
+            _value = value;
+        }
+
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Topic);
+        }
+
+        public bool Equals(Topic topic)
+        {
+            return _value != null && (topic != null && _value.Equals(topic._value));
+        }
     }
 }

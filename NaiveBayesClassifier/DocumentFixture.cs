@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 
 namespace NaiveBayesClassifier
 {
@@ -6,9 +7,16 @@ namespace NaiveBayesClassifier
     public class DocumentFixture
     {
         [Test]
-        public void DoesItWork()
+        public void CanConvertToBagOfAttributes()
         {
-            Assert.IsTrue(true);
+            var chinese = new Attribute("Chinese");
+            var beijing = new Attribute("Beijing");
+            var document = new Document(chinese, beijing, chinese);
+
+            var bag = document.ToBag();
+            var occurrences = bag.AttributeOccurrences;
+            Assert.AreEqual(1, occurrences.Single(e => e.Attribute.Equals(beijing)).Count);
+            Assert.AreEqual(2, occurrences.Single(e => e.Attribute.Equals(chinese)).Count);
         }
     }
 }
