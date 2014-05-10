@@ -36,17 +36,39 @@ namespace NaiveBayesClassifier
         public double ComputeScore(Topic topic, BagOfAttributes bag)
         {
             var prior = ComputePriorProbability(topic);
-            var likelihoods =
-                bag.AttributeOccurrences.Select(
-                    e => Math.Pow(ComputeConditionalLikelihood(e.Attribute, topic), e.Count))
-                    .Aggregate((x, y) => x * y);
+            var aggregatedLikelihood = 1.0d;
 
-            return prior * likelihoods;
+            foreach (var attributeOccurrence in bag.AttributeOccurrences)
+            {
+                var attribute = attributeOccurrence.Attribute;
+                var count = attributeOccurrence.Count;
+
+                var likelihood = ComputeConditionalLikelihood(attribute, topic);
+                var weightedLikelihood = Math.Pow(likelihood, count);
+
+                aggregatedLikelihood *= weightedLikelihood;
+            }
+
+            return prior * aggregatedLikelihood;
         }
 
         public double ComputeLogScore(Topic topic, BagOfAttributes bag)
         {
-            return 0.0d;
+            var prior = Math.Log(ComputePriorProbability(topic));
+            var aggregatedLikelihood = 0.0d;
+
+            foreach (var attributeOccurrence in bag.AttributeOccurrences)
+            {
+                var attribute = attributeOccurrence.Attribute;
+                var count = attributeOccurrence.Count;
+
+                var likelihood = Math.Log(ComputeConditionalLikelihood(attribute, topic));
+                var weightedLikelihood = likelihood * count;
+
+                aggregatedLikelihood += weightedLikelihood;
+            }
+
+            return prior + aggregatedLikelihood;
         }
     }
 }

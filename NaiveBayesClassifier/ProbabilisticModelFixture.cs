@@ -1,4 +1,5 @@
-﻿using NaiveBayesClassifier.Data;
+﻿using System;
+using NaiveBayesClassifier.Data;
 using NUnit.Framework;
 
 namespace NaiveBayesClassifier
@@ -38,13 +39,21 @@ namespace NaiveBayesClassifier
         {
             var set = StanfordExample.TrainingSet;
             var model = new ProbabilisticModel(set);
-            var testDocument = StanfordExample.TestDocument;
-            var bag = testDocument.ToBag();
+            var bag = StanfordExample.TestDocument.ToBag();
 
-            const double acceptedError = 0.00005;
+            double delta = Math.Pow(10, -10.0);
 
-            Assert.AreEqual(0.0003d, model.ComputeScore(StanfordExample.C, bag), acceptedError);
-            Assert.AreEqual(0.0001d, model.ComputeScore(StanfordExample.J, bag), acceptedError);
+            double p1 = 3 / 4.0 * Math.Pow(3 / 7.0, 3) * 1 / 14.0 * 1 / 14.0;
+            double p2 = 1 / 4.0 * Math.Pow(2 / 9.0, 3) * 2 / 9.0 * 2 / 9.0;
+
+            double logp1 = Math.Log(p1);
+            double logp2 = Math.Log(p2);
+
+            Assert.AreEqual(p1, model.ComputeScore(StanfordExample.C, bag), delta);
+            Assert.AreEqual(p2, model.ComputeScore(StanfordExample.J, bag), delta);
+
+            Assert.AreEqual(logp1, model.ComputeLogScore(StanfordExample.C, bag), delta);
+            Assert.AreEqual(logp2, model.ComputeLogScore(StanfordExample.J, bag), delta);
         }
     }
 }

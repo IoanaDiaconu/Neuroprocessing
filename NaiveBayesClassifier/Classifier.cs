@@ -16,7 +16,7 @@
 
             foreach (var topic in _model.Topics)
             {
-                double score = _model.ComputeScore(topic, bag);
+                double score = _model.ComputeLogScore(topic, bag);
 
                 if (score > max)
                 {
