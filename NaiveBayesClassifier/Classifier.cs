@@ -9,9 +9,23 @@
             _model = model;
         }
 
-        public Topic Classify(BagOfAttributes document)
+        public Topic Classify(BagOfAttributes bag)
         {
-            return null;
+            Topic argmax = null;
+            double max = double.MinValue;
+
+            foreach (var topic in _model.Topics)
+            {
+                double score = _model.ComputeScore(topic, bag);
+
+                if (score > max)
+                {
+                    max = score;
+                    argmax = topic;
+                }    
+            }
+
+            return argmax;
         }
     }
 }

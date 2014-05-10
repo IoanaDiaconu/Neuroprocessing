@@ -8,9 +8,11 @@ namespace NaiveBayesClassifier
     {
         private readonly TrainingSet _trainingSet;
         private readonly MapOfTopicSpans _mapOfTopicSpans;
-        
+        public readonly Topic[] Topics;
+
         public ProbabilisticModel(TrainingSet trainingSet)
         {
+            Topics = trainingSet.Topics;
             _trainingSet = trainingSet;
             _mapOfTopicSpans = new MapOfTopicSpans(trainingSet);
         }

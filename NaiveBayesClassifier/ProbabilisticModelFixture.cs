@@ -38,8 +38,7 @@ namespace NaiveBayesClassifier
         {
             var set = StanfordExample.TrainingSet;
             var model = new ProbabilisticModel(set);
-            var testDocument = new Document(StanfordExample.Chinese, StanfordExample.Chinese,
-                StanfordExample.Chinese, StanfordExample.Tokyo, StanfordExample.Japan);
+            var testDocument = StanfordExample.TestDocument;
             var bag = testDocument.ToBag();
 
             const double acceptedError = 0.00005;
