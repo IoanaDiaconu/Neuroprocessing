@@ -40,6 +40,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\Arff.cs" />
     <Compile Include="ProbabilisticModelFixture.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="AttributeFixture.cs" />
@@ -67,11 +68,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Data\MultiClass_Testing_SVM_100.0.arff" />
-    <None Include="Data\MultiClass_Testing_SVM_1309.0.arff" />
-    <None Include="Data\MultiClass_Training_SVM_100.0.arff" />
-    <None Include="Data\MultiClass_Training_SVM_1309.0.arff" />
-    <None Include="packages.config" />
+    <None Include="Data\MultiClass_Testing_SVM_100.0.arff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\MultiClass_Testing_SVM_1309.0.arff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\MultiClass_Training_SVM_100.0.arff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\MultiClass_Training_SVM_1309.0.arff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

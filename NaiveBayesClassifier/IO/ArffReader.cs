@@ -1,41 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Security.Permissions;
+using System.Linq;
+using NaiveBayesClassifier.Training;
 
 namespace NaiveBayesClassifier.IO
 {
     public class ArffReader
     {
-        private readonly string[] _linesOfFile;
+        private string[] _linesOfFile;
 
-        public ArffReader(string path)
+        public Arff Read(string path)
         {
+            var arff = new Arff();
             _linesOfFile = File.ReadAllLines(path);
+
+            var samples = _linesOfFile[0].Split(' ');
+            arff.SamplesCount = int.Parse(samples[1]);
+
+            var attributes = _linesOfFile[1].Split(' ');
+            arff.AttributesCount = int.Parse(attributes[1]);
+
+            var topics = _linesOfFile[2].Split(' ');
+            arff.TopicsCount = int.Parse(topics[1]);
+
+            _linesOfFile =
+                _linesOfFile.SkipWhile(DoesNotStartWithData)
+                    .SkipWhile(line => line.StartsWith("@data"))
+                    .SkipWhile(string.IsNullOrEmpty)
+                    .ToArray();
+
+            arff.TrainingTuples = _linesOfFile.Select(ReadTuple).ToArray();
+
+            return arff;
+
         }
 
-        public IEnumerable<BagOfAttributes> ReadSamples()
+        public TrainingTuple ReadTuple(string line)
         {
-            return null;
+
+            var parts = line.Split('#');
+            var attributeOccurrences = parts[0].Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries).Select(ReadAttributeOccurrence).ToArray();
+            var topics = parts[1].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(ReadTopic).ToArray();
+            return new TrainingTuple(new BagOfAttributes(attributeOccurrences), topics);
         }
 
-        public BagOfAttributes ReadSample(string sampleLine)
+        public AttributeOccurrence ReadAttributeOccurrence(string input)
         {
-            return null;
+            var parts = input.Split(':');
+            return new AttributeOccurrence(new Attribute(parts[0]), int.Parse(parts[1]));
         }
 
-        public IDictionary<Attribute, int> ReadFrequencyOfAttributes(string leftPartOfSampleLine)
+        public Topic ReadTopic(string input)
         {
-            return null;
+            return new Topic(input);
         }
 
-        public KeyValuePair<Attribute, int> ReadAttributeAndFrequence(string attributeAndFrequency)
+        private bool DoesNotStartWithData(string line)
         {
-            return new KeyValuePair<Attribute, int>(null, 0);
-        }
+            return !line.StartsWith("@data");
 
-        public IEnumerable<Topic> ReadTopics(string rightPartOfSampleLine)
-        {
-            return null;
         }
     }
 }

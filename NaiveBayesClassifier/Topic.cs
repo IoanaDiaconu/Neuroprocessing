@@ -23,5 +23,10 @@
         {
             return _value != null && (topic != null && _value.Equals(topic._value));
         }
+
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 }
