@@ -40,6 +40,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Evaluation\BunchOfConfusionMatrices.cs" />
+    <Compile Include="Evaluation\ConfusionMatrix.cs" />
     <Compile Include="IO\Arff.cs" />
     <Compile Include="ProbabilisticModelFixture.cs" />
     <Compile Include="Attribute.cs" />
